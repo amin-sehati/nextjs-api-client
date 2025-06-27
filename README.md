@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LangGraph API Client
+
+A Next.js application that provides a web interface for making API calls to the LangGraph streaming endpoint.
+
+## Features
+
+- Clean, responsive web interface built with Tailwind CSS
+- Real-time API calls to LangGraph streaming endpoint
+- Support for API key authentication
+- Configurable assistant ID and message content
+- Proper error handling and response display
+- TypeScript support for type safety
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18 or later
+- npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias "@/*" --yes
+
+### Installation & Running
+
+1. The dependencies are already installed. The development server is running on port 3000.
+
+2. Open your browser and navigate to: `http://localhost:3000`
+
+### Configuration
+
+You can configure the API client in two ways:
+
+#### Option 1: Environment Variable (Recommended)
+Create a `.env.local` file in the root directory:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_API_KEY=your_actual_api_key_here
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Option 2: Runtime Configuration
+Enter your API key directly in the web interface form.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **API Key**: Enter your LangGraph API key (either from environment or manually)
+2. **Assistant ID**: Pre-filled with the default ID, but you can modify it
+3. **Message Content**: Pre-filled with sample Microsoft Office content, but you can modify it
+4. **Submit**: Click "Send API Request" to make the API call
 
-## Learn More
+The application will display:
+- Loading state while processing
+- Success response with the API data
+- Error messages if something goes wrong
 
-To learn more about Next.js, take a look at the following resources:
+### API Endpoint Details
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **URL**: `https://ht-left-oleo-40-fc4247019a235621a56c8b9686a58fe1.us.langgraph.app/runs/stream`
+- **Method**: POST
+- **Authentication**: API Key header (`x-api-key`)
+- **Content-Type**: `application/json`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Sample Request Body Structure
 
-## Deploy on Vercel
+```json
+{
+    "assistant_id": "079b1acc-49e6-4d00-a763-5e27658d813c",
+    "input": {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Your message content here..."
+            }
+        ]
+    },
+    "stream_mode": "values"
+}
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To restart the development server:
+```bash
+npm run dev
+```
+
+To build for production:
+```bash
+npm run build
+npm start
+```
+
+### Project Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx          # Root layout component
+│   ├── page.tsx           # Main page with API client interface
+│   └── globals.css        # Global styles
+└── lib/
+    └── api-client.ts      # LangGraph API client utility
+```
+
+### Technologies Used
+
+- **Next.js 15** - React framework with App Router
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **React 19** - UI library
+
+## Security Note
+
+Remember to keep your API key secure:
+- Use environment variables in production
+- Never commit API keys to version control
+- Consider using server-side API routes for additional security in production
